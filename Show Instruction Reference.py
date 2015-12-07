@@ -1,5 +1,8 @@
 import sqlite3 as sq
 import os
+import platform
+import sys
+from sys import platform as _platform
 import inspect
 import glob
 
@@ -44,7 +47,11 @@ class InstructionReference:
         self.title = "Instruction Reference"
         self.destroying = False
 
-        self.base_path = os.path.abspath(os.path.expanduser("~/Library/Application Support/Hopper/Scripts"))
+        posix_os = platform.system()
+        if posix_os == "Linux" or _platform == "linux" or _platform == "linux2":
+            self.base_path = os.path.abspath(os.path.expanduser("~/GNUstep/Library/ApplicationSupport/Hopper/Scripts"))
+        if posix_os == "Darwin" or _platform == "darwin":
+            self.base_path = os.path.abspath(os.path.expanduser("~/Library/Application Support/Hopper/Scripts"))
 
         self.archs = self.findManuals()
 
