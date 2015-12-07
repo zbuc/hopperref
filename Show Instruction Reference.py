@@ -17,13 +17,15 @@ doc.log("Documentation for instruction at " + hex(adr))
 instr = seg.getInstructionAtAddress(adr)
 
 # not sure why but stringForArchitecture returns <unknown> for arm/v7 (id 4)
-if instr.getArchitecture() == 4:
+# seg.isThumbAtAddress() ?doc.is64Bits() ? 
+if instr.getArchitecture() == 4:    # 32-bit processor
     arch = "arm/v7"
-elif instr.getArchitecture() == 5:
+elif instr.getArchitecture() == 5:  # 64-bit processor
     arch = "arm/v8"
 else:
-    arch = instr.stringForArchitecture(instr.getArchitecture())
+    arch = instr.stringForArchitecture(instr.getArchitecture())  # Auto-Detect processor
 
+doc.log("ArchID: %s" % instr.getArchitecture())
 doc.log("Architecture: %s" % arch)
 doc.log("instruction: " + instr.getInstructionString())
 doc.log("instruction length: %d" % instr.getInstructionLength())
@@ -78,7 +80,7 @@ class InstructionReference:
         name = name.lower()
         if name == "x86_64" or name == "x86" or name == "i386":
             name = "x86-64"
-        elif name.startswith("arm"):
+        elif name.startswith("arm") or name == "aarch64":
             name = "arm"
 
         self.arch = name
